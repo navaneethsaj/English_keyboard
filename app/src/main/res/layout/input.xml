@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/suggestions_layout"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+    <com.navaneethsaj.englishkeyboard.LatinKeyboardView
+        android:id="@+id/keyboard"
+        android:layout_alignParentBottom="true"
+        android:keyTextSize="13dp"
+        android:shadowRadius="0.0"
+        android:paddingTop="0dp"
+        android:paddingBottom="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:keyPreviewLayout="@layout/preview"
+        android:keyBackground="@drawable/key_background"
+        android:keyTextColor="#000000"
+        android:background="@color/colorPrimaryDark"
+        android:popupLayout="@layout/keyboard_popup_layout" >
+
+    </com.navaneethsaj.englishkeyboard.LatinKeyboardView>
+</LinearLayout>
