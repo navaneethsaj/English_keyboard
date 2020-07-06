@@ -92,7 +92,7 @@ public class SoftKeyboard extends InputMethodService
     private SpellCheckerSession mScs;
     private List<String> mSuggestions;
 
-    private LinearLayout suggestionsLayout;
+    private LinearLayout suggestionsLayout, suggestionsLayoutContainer;
 
 
     /**
@@ -135,6 +135,7 @@ public class SoftKeyboard extends InputMethodService
     @Override public View onCreateInputView() {
         rootView = (LinearLayout) getLayoutInflater().inflate(R.layout.input, null);
         suggestionsLayout = rootView.findViewById(R.id.suggestions_layout);
+        suggestionsLayoutContainer = rootView.findViewById(R.id.suggestions_layout_container);
         mInputView = rootView.findViewById(R.id.keyboard);
         mInputView.setOnKeyboardActionListener(this);
         mInputView.setPreviewEnabled(true);
@@ -581,6 +582,7 @@ public class SoftKeyboard extends InputMethodService
      * candidates.
      */
     private void updateCandidates() {
+        Log.d("action", "updating");
         if (!mCompletionOn) {
             if (mComposing.length() > 0) {
                 ArrayList<String> list = new ArrayList<String>();
@@ -605,6 +607,7 @@ public class SoftKeyboard extends InputMethodService
         if (suggestionsLayout != null){
             if (suggestions != null && suggestions.size() > 0) {
                 suggestionsLayout.removeAllViews();
+                suggestionsLayoutContainer.setVisibility(View.VISIBLE);
                 for (int i = 0; i < suggestions.size(); ++i) {
                     Button suggestion = (Button) getLayoutInflater().inflate(R.layout.suggestions_item, null);
                     int finalI = i;
@@ -621,6 +624,9 @@ public class SoftKeyboard extends InputMethodService
                     suggestion.setText(suggestions.get(i));
                     suggestionsLayout.addView(suggestion);
                 }
+            }else {
+                suggestionsLayout.removeAllViews();
+                suggestionsLayoutContainer.setVisibility(View.INVISIBLE);
             }
         }
 

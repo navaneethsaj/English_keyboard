@@ -19,11 +19,11 @@
 -->
 <resources>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#F7F7F7</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#EBEBEB</color>
     <color name="candidate_normal">#FF000000</color>
     <color name="candidate_recommended">#000000</color>
-    <color name="candidate_other">#ff808080</color>
-    <color name="candidate_background">#EBFFFFFF</color>
+    <color name="candidate_other">#FFFFFF</color>
+    <color name="candidate_background">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>
