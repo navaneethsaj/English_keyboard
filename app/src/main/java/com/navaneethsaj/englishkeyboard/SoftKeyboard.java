@@ -94,6 +94,7 @@ public class SoftKeyboard extends InputMethodService
 
     private LinearLayout suggestionsLayout, suggestionsLayoutContainer;
 
+    public MyDictionary myDictionary;
 
     /**
      * Main initialization of the input method component.  Be sure to call
@@ -140,6 +141,7 @@ public class SoftKeyboard extends InputMethodService
         mInputView.setOnKeyboardActionListener(this);
         mInputView.setPreviewEnabled(true);
         setLatinKeyboard(mQwertyKeyboard);
+        myDictionary = new MyDictionary(getApplicationContext());
         return rootView;
     }
 
@@ -378,7 +380,7 @@ public class SoftKeyboard extends InputMethodService
      * continue to the app.
      */
     @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
-
+        Log.d("actionz", String.valueOf(keyCode) + " "+ KeyEvent.KEYCODE_SPACE);
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 // The InputMethodService already takes care of the back
@@ -410,32 +412,37 @@ public class SoftKeyboard extends InputMethodService
                 // For all other keys, if we want to do transformations on
                 // text being entered with a hard keyboard, we need to process
                 // it and do the appropriate action.
-                /*
+                Log.d("action", "sss");
+
                 if (PROCESS_HARD_KEYS) {
-                    if (keyCode == KeyEvent.KEYCODE_SPACE
-                            && (event.getMetaState()&KeyEvent.META_ALT_ON) != 0) {
-                        // A silly example: in our input method, Alt+Space
-                        // is a shortcut for 'android' in lower case.
-                        InputConnection ic = getCurrentInputConnection();
-                        if (ic != null) {
-                            // First, tell the editor that it is no longer in the
-                            // shift state, since we are consuming this.
-                            ic.clearMetaKeyStates(KeyEvent.META_ALT_ON);
-                            keyDownUp(KeyEvent.KEYCODE_A);
-                            keyDownUp(KeyEvent.KEYCODE_N);
-                            keyDownUp(KeyEvent.KEYCODE_D);
-                            keyDownUp(KeyEvent.KEYCODE_R);
-                            keyDownUp(KeyEvent.KEYCODE_O);
-                            keyDownUp(KeyEvent.KEYCODE_I);
-                            keyDownUp(KeyEvent.KEYCODE_D);
-                            // And we consume this event.
-                            return true;
-                        }
+                    Log.d("action", "sss");
+                    if (keyCode == KeyEvent.KEYCODE_SPACE){
+                        Log.d("action", "Sapce");
                     }
-                    if (mPredictionOn && translateKeyDown(keyCode, event)) {
-                        return true;
-                    }
-                }*/
+//                    if (keyCode == KeyEvent.KEYCODE_SPACE){
+////                            && (event.getMetaState()&KeyEvent.META_ALT_ON) != 0) {
+//                        // A silly example: in our input method, Alt+Space
+//                        // is a shortcut for 'android' in lower case.
+//                        InputConnection ic = getCurrentInputConnection();
+//                        if (ic != null) {
+//                            // First, tell the editor that it is no longer in the
+//                            // shift state, since we are consuming this.
+//                            ic.clearMetaKeyStates(KeyEvent.META_ALT_ON);
+//                            keyDownUp(KeyEvent.KEYCODE_A);
+//                            keyDownUp(KeyEvent.KEYCODE_N);
+//                            keyDownUp(KeyEvent.KEYCODE_D);
+//                            keyDownUp(KeyEvent.KEYCODE_R);
+//                            keyDownUp(KeyEvent.KEYCODE_O);
+//                            keyDownUp(KeyEvent.KEYCODE_I);
+//                            keyDownUp(KeyEvent.KEYCODE_D);
+//                            // And we consume this event.
+//                            return true;
+//                        }
+//                    }
+//                    if (mPredictionOn && translateKeyDown(keyCode, event)) {
+//                        return true;
+//                    }
+                }
         }
         
         return super.onKeyDown(keyCode, event);
@@ -559,7 +566,9 @@ public class SoftKeyboard extends InputMethodService
                 setLatinKeyboard(mSymbolsKeyboard);
                 mSymbolsKeyboard.setShifted(false);
             }
-        } else {
+            // SPACE
+        }
+        else {
             handleCharacter(primaryCode, keyCodes);
         }
     }
@@ -587,7 +596,7 @@ public class SoftKeyboard extends InputMethodService
             if (mComposing.length() > 0) {
                 ArrayList<String> list = new ArrayList<String>();
                 //list.add(mComposing.toString());
-                Log.d("SoftKeyboard", "REQUESTING: " + mComposing.toString());
+//                Log.d("SoftKeyboard", "REQUESTING: " + mComposing.toString());
                 mScs.getSentenceSuggestions(new TextInfo[] {new TextInfo(mComposing.toString())}, 5);
                 setSuggestions(list, true, true);
             } else {
@@ -603,11 +612,10 @@ public class SoftKeyboard extends InputMethodService
         } else if (isExtractViewShown()) {
             setCandidatesViewShown(true);
         }
-//        mSuggestions = suggestions;
+        mSuggestions = suggestions;
         if (suggestionsLayout != null){
             if (suggestions != null && suggestions.size() > 0) {
                 suggestionsLayout.removeAllViews();
-                suggestionsLayoutContainer.setVisibility(View.VISIBLE);
                 for (int i = 0; i < suggestions.size(); ++i) {
                     Button suggestion = (Button) getLayoutInflater().inflate(R.layout.suggestions_item, null);
                     int finalI = i;
@@ -626,7 +634,6 @@ public class SoftKeyboard extends InputMethodService
                 }
             }else {
                 suggestionsLayout.removeAllViews();
-                suggestionsLayoutContainer.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -735,22 +742,28 @@ public class SoftKeyboard extends InputMethodService
     }
     
     public void pickSuggestionManually(int index) {
-        if (mCompletionOn && mCompletions != null && index >= 0
-                && index < mCompletions.length) {
-            CompletionInfo ci = mCompletions[index];
-            getCurrentInputConnection().commitCompletion(ci);
-//            if (mCandidateView != null) {
-//                mCandidateView.clear();
+//        if (mCompletionOn && mCompletions != null && index >= 0
+//                && index < mCompletions.length) {
+//            CompletionInfo ci = mCompletions[index];
+//            getCurrentInputConnection().commitCompletion(ci);
+////            if (mCandidateView != null) {
+////                mCandidateView.clear();
+////            }
+//            updateShiftKeyState(getCurrentInputEditorInfo());
+//        } else if (mComposing.length() > 0) {
+//
+//            if (mPredictionOn && mSuggestions != null && index >= 0) {
+//                mComposing.replace(0, mComposing.length(), mSuggestions.get(index));
 //            }
-            updateShiftKeyState(getCurrentInputEditorInfo());
-        } else if (mComposing.length() > 0) {
+//            commitTyped(getCurrentInputConnection());
+//
+//        }
 
-            if (mPredictionOn && mSuggestions != null && index >= 0) {
-                mComposing.replace(0, mComposing.length(), mSuggestions.get(index));
-            }
-            commitTyped(getCurrentInputConnection());
-
-        }
+        suggestionsLayout.removeAllViews();
+        Log.d("SoftkeyBoard", mComposing.toString());
+        mComposing = new StringBuilder();
+        mComposing.append(mSuggestions.get(index)).append(" ");
+        commitTyped(getCurrentInputConnection());
     }
     
     public void swipeRight() {
@@ -822,7 +835,14 @@ public class SoftKeyboard extends InputMethodService
                         sb, ssi.getSuggestionsInfoAt(j), ssi.getOffsetAt(j), ssi.getLengthAt(j));
             }
         }
-        Log.d("SoftKeyboard", "SUGGESTIONS: " + sb.toString());
+        Log.d("SoftKeyboard", "SUGGESTIONS_1: " + sb.toString());
+        ArrayList<Object> dictionary_suggestions = myDictionary.get_dict_suggestions(mComposing.toString());
+        if ((boolean) dictionary_suggestions.get(0)){
+            ArrayList<String> sugg = (ArrayList<String>) dictionary_suggestions.get(1);
+            for (int i = 0 ; i < sugg.size(); ++i){
+                sb.add(sugg.get(i));
+            }
+        }
         setSuggestions(sb, true, true);
     }
 }

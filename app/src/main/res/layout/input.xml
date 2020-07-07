@@ -5,11 +5,10 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <LinearLayout
-        android:visibility="invisible"
         android:id="@+id/suggestions_layout_container"
-        android:background="@color/colorPrimaryDark"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/toolBar"
+        android:layout_height="40dp">
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -17,7 +16,7 @@
                 android:id="@+id/suggestions_layout"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="match_parent">
 
             </LinearLayout>
         </HorizontalScrollView>
